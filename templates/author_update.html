@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static crispy_forms_tags %}
+{% block content %}
+<div class="col-6 offset-3">
+  <div class="container ">
+    <div class="image text-center">
+      {% if request.user.author.picture %}
+      <img
+        src="{{ request.user.author.picture.url }}"
+        alt="..."
+        class="img-fluid"
+        width="250px"
+        height="250px"
+      />
+      {% endif %}
+    </div>
+    <hr />
+    <h1 class="text-center">{{ request.user|upper }}</h1>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %} {{user_form|crispy}} {{author_form|crispy}}
+      <br>
+      <input
+        type="submit"
+        class="btn btn-block btn-primary"
+        value="Update Profile"
+      />
+    </form>
+  </div>
+</div>
+<style>
+  *{
+      font-family: 'Roboto', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+  }
+</style>
+{% endblock %}

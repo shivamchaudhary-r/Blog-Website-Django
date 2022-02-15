@@ -1,0 +1,498 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <!-- Latest Posts -->
+        <main class="post blog-post col-lg-8"> 
+          <div class="container">
+            <div class="post-single">
+              <div class="post-thumbnail"><img src="{{ post.thumbnail.url }}" alt="" class="img-fluid"></div>
+              <div class="post-details">
+                <div class="post-meta d-flex justify-content-between">
+                  <div class="category">
+                    {% for cat in post.categories.all %}
+                    <a href="#">{{ cat }}</a>
+                    {% endfor %}
+                  </div>
+                  <div>
+                    <a class="btn btn-success" href="{% url 'post-update' pk=post.pk %}">Update</a>
+                    <a class="btn btn-danger" href="{% url 'post-delete' pk=post.pk %}">Delete</a>
+                  </div>
+                </div>
+                <h1>{{ post.title }}<a href="#"></a></h1>
+                <div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="#" class="author d-flex align-items-center flex-wrap">
+                  <div class="d-flex align-items-center flex-wrap">
+                    <div class="title"><span>{{ post.author.user.username }}</span></div></a>       
+                    <div class="date"> {{ post.timestamp }}</div>
+                    </div>
+                </div>
+                <div class="post-body">
+                  {{ post.content | safe }}
+                </div>
+                <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+                {% if post.previous_post %}
+                <a href="{{ post.previous_post.get_absolute_url }}" class="prev-post text-left d-flex align-items-center">
+                    <div class="icon prev"><i class="fa fa-angle-left"></i></div>
+                    <div class="text"><strong class="text-primary">Previous Post </strong>
+                      <h6>{{ post.previous_post.title }}</h6>
+                    </div>
+                </a>
+                {% endif %}
+                {% if post.next_post %}
+                <a href="{{ post.next_post.get_absolute_url }}" class="next-post text-right d-flex align-items-center justify-content-end">
+                    <div class="text"><strong class="text-primary">Next Post </strong>
+                      <h6>{{ post.next_post.title }}</h6>
+                    </div>
+                    <div class="icon next"><i class="fa fa-angle-right">   </i></div>
+                </a>
+                {% endif %}
+                </div>
+                <div class="post-comments">
+                  <header>
+                    <h3 class="h6">Post Comments<span class="no-of-comments">({{ post.comments.count }})</span></h3>
+                  </header>
+                  {% for comment in post.get_comments %}
+                  <div class="comment">
+                    <div class="comment-header d-flex justify-content-between">
+                      <div class="user d-flex align-items-center">
+                        <div class="title"><strong>{{ comment.user.username }}</strong></div>                   
+                      </div>
+                    </div>
+                    <div class="comment-body">
+                      <p>{{ comment.content }}</p>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="add-comment">
+                  <header>
+                    <h3 class="h6">Leave a reply</h3>
+                  </header>
+                  <form method="POST" action="." class="commenting-form">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="form-group col-md-12">
+                        {{ form }}
+                      </div>
+                      <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-secondary">Submit Comment</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                {% else %}
+                <a href="{% url 'account_login' %}" class="btn btn-primary">Login to comment</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </main>
+        {% include 'sidebar.html' with most_recent=most_recent category_count=category_count %}        
+      </div>
+    </div>
+
+    <style>
+body {
+  
+  overflow-x: hidden;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a,
+i,
+span {
+  display: inline-block;
+  text-decoration: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+a:hover, a:focus,
+i:hover,
+i:focus,
+span:hover,
+span:focus {
+  text-decoration: none;
+}
+
+a i {
+  -webkit-transition: none;
+  transition: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  padding: 100px 0;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  outline: none !important;
+}
+
+button {
+  cursor: pointer;
+}
+
+main,
+aside {
+  padding: 20px 0 100px;
+}
+
+h1 a {
+  margin-left: 10px;
+  font-size: 0.9em;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  color: #555;
+  text-decoration: none;
+}
+
+h1:hover a {
+  opacity: 1;
+}
+
+
+.post-meta {
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+
+.post-meta .date {
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.post-meta .date::after {
+  display: none;
+}
+
+.post a {
+  text-decoration: none;
+}
+
+.post a:hover, .post a:focus {
+  text-decoration: none;
+}
+
+.post h3 {
+  line-height: 1.1em;
+  color: var(--text-color);
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  margin-bottom: 1rem;
+}
+
+.post h3:hover {
+  color: #555;
+}
+
+.post .category a {
+  color: #1F51FF;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  cursor: text;
+}
+
+.post .date {
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+
+.post .title,
+.post .date,
+.post .comments,
+.post .views {
+  font-size: 15px;
+  font-weight: 500;
+  color: #999;
+  text-transform: capitalize;
+}
+
+.post .title::after,
+.post .date::after,
+.post .comments::after,
+.post .views::after {
+  content: '|';
+  display: inline-block;
+  margin: 0 7px;
+  font-size: 1em;
+  color: #ccc;
+}
+
+.post .post-tags {
+  margin-top: 30px;
+}
+
+.post .post-tags .tag {
+  padding: 5px 25px;
+  border: 1px solid #ddd;
+  margin: 5px;
+  color: #777;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+}
+
+.post .post-tags .tag:hover {
+  background: #999;
+  color: #fff;
+  border-color: #999;
+}
+
+.post .meta-last::after {
+  display: none;
+}
+
+
+.blog-post {  
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.blog-post .post-footer {
+  font-size: 0.8em;
+}
+
+.blog-post .post-thumbnail img {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.blog-post h1 {
+  color: #444;
+  line-height: 1.1em;
+}
+
+.blog-post h1:hover {
+  color: #444;
+}
+
+.blog-post .post-footer {
+  margin-top: 20px;
+}
+
+.blog-post .post-body {
+  margin-top: 40px;
+  color: var(--text-color);
+}
+
+.blog-post .post-body h2,
+.blog-post .post-body h3,
+.blog-post .post-body h4,
+.blog-post .post-body h5,
+.blog-post .post-body h6 {
+  color: #333;
+}
+
+.blog-post .post-body p {
+  margin-bottom: 30px;
+}
+
+.blog-post .post-body p:not(.lead) {
+  font-size: 1em;
+  line-height: 1.7em;
+  color: #555;
+}
+
+.blog-post .posts-nav {
+  margin-top: 50px;
+  color: #777;
+  font-size: 0.8em;
+}
+
+.blog-post .posts-nav a {
+  color: inherit;
+  width: calc(50% - 10px);
+  padding: 10px 20px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+.blog-post .posts-nav a:hover {
+  border-color: #999;
+}
+
+.blog-post .posts-nav a:hover .icon {
+  background: #999;
+  color: #fff;
+  border-color: #999;
+}
+
+.blog-post .icon {
+  min-width: 35px;
+  max-width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  line-height: 32px;
+  border: 1px solid #ddd;
+  color: #aaa;
+  font-size: 1.5em;
+  text-align: center;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.blog-post .icon.prev {
+  margin-right: 20px;
+}
+
+.blog-post .icon.next {
+  margin-left: 20px;
+}
+
+.blog-post .post-comments {
+  border-right: 1px solid #eee;
+	border-left: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.blog-post .post-comments span.no-of-comments {
+  
+  color: #777;
+  font-size: 0.8em;
+  margin-left: 5px;
+  font-weight: 400;
+}
+
+.blog-post .post-comments header {
+  padding-top: 20px;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.blog-post .post-comments .comment:last-of-type .comment-body {
+  
+  border-bottom: none;
+}
+
+.blog-post .post-comments .title {
+ padding-left: 20px;
+}
+
+.blog-post .post-comments .title::after {
+  display: none;
+}
+
+.blog-post .post-comments strong {
+  display: block;
+  color: #555;
+}
+
+.blog-post .post-comments span.date {
+  font-size: 0.8em;
+  color: #999;
+}
+
+.blog-post .post-comments span.date::after {
+  display: none;
+}
+
+.blog-post .post-comments .comment-body {
+  
+  margin-top: 5px;
+  margin-bottom: 25px;
+  padding-left: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.blog-post .post-comments p {
+  font-size: 1em;
+  color: #555;
+}
+
+.blog-post .add-comment {
+  margin-top: 50px;
+}
+
+.blog-post .add-comment header {
+  margin-bottom: 30px;
+}
+
+.blog-post .add-comment input,
+.blog-post .add-comment textarea {
+  background: none;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  border-radius: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+.blog-post .add-comment input::-moz-placeholder,
+.blog-post .add-comment textarea::-moz-placeholder {
+  font-weight: 400;
+  font-size: 0.9em;
+  color: #aaa;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+}
+
+.blog-post .add-comment input::-webkit-input-placeholder,
+.blog-post .add-comment textarea::-webkit-input-placeholder {
+  font-weight: 400;
+  font-size: 0.9em;
+  color: #aaa;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+}
+
+.blog-post .add-comment input:-ms-input-placeholder,
+.blog-post .add-comment textarea:-ms-input-placeholder {
+  font-weight: 400;
+  font-size: 0.9em;
+  color: #aaa;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+}
+
+.blog-post .add-comment input:focus,
+.blog-post .add-comment textarea:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-bottom: 1px solid #999;
+}
+
+.blog-post .add-comment textarea {
+  min-height: 150px;
+}
+
+blockquote.blockquote {
+  font-size: 1.05em;
+  line-height: 1.7em;
+  border-color: #999;
+  border: 1px solid #eee;
+  border-left: 6px solid #eee;
+  padding: 20px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 30px;
+}
+
+blockquote.blockquote p {
+  margin-bottom: 15px !important;
+}
+
+    </style>
+{% endblock content %}

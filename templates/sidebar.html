@@ -1,0 +1,215 @@
+<aside class="col-lg-4">
+    <div class="sidebar">
+        <div class="row">
+          <div class="col-lg-12 ">
+            <div class="sidebar-item search">
+              <div class="sidebar-heading">
+                <h2>Search</h2>
+              </div>
+              <form id="search_form" name="gs" method="GET" action="{% url 'search' %}">
+                <input type="text" name="q" class="searchText" placeholder="Search the blog"
+                        autocomplete="on">
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="sidebar-item recent-posts">
+              <div class="sidebar-heading">
+                <h2>Recent Posts</h2>
+              </div>
+
+              <div class="content blog-posts">
+                {% for post in most_recent %}
+                <div>
+                  <a href="{{ post.get_absolute_url }}">
+                    <h5 style="text-decoration: none;">{{ post.title }}</h5>
+                    <span>{{ post.content|truncatechars:100 }}</span>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>      
+    
+          <div class="col-lg-12">
+            <div class="sidebar-item cats">
+              <div class="sidebar-heading">
+                <h2>Categories</h2>
+              </div>
+              <div class="content">
+                <div class="item">
+                  {% for cat in category_count %}
+                  <span><a href="#" style="text-decoration: none;">{{ cat.categories__title }}</a></span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+              <div class="sidebar-item tags">
+                <div class="sidebar-heading widget categories">
+                  <h2>Tags</h2>
+                </div>
+                <div class="content">
+                  <div class="item">
+                    {% for tag in tag_count %}
+                    <span><a href="#" style="text-decoration: none;" >{{ tag.tags__title }}</a></span>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      
+</aside>
+
+
+<style>
+    
+/* Sidebar */
+*{
+  font-family: 'Roboto', sans-serif;
+}
+
+.sidebar {
+	margin-left: 30px;
+}
+
+.sidebar .sidebar-item {
+	margin-top: 50px;
+}
+
+.sidebar .search {
+	margin-top: 0px;
+}
+
+.sidebar .sidebar-heading h2 {
+	font-size: 18px;
+	text-transform: uppercase;
+	font-weight: 900;
+	letter-spacing: 0.5px;
+	color: var(--text-color);
+	border-bottom: 1px solid #eee;
+	padding-bottom: 15px;
+	margin-bottom: 25px;
+}
+
+.sidebar .search input {
+	width: 100%;
+	height: 50px;
+	border: 1px solid #eee;
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: 500;
+	color: #7a7a7a;
+	outline: none;
+	padding: 0px 15px;
+}
+
+.sidebar .search input::placeholder {
+	color: #aaa;
+}
+
+.sidebar .recent-posts  {
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #eee;
+}
+
+.sidebar .recent-posts h5 {
+	font-size: 18px;
+	font-weight: 900;
+  color: var(--text-color);
+	line-height: 30px;
+	transition: all 0.3s;
+
+}
+
+.sidebar .recent-posts  h5:hover {
+	color: #1F51FF;
+}
+
+.sidebar .recent-posts span {
+  display: inline-block;
+	font-size: 15px;
+	color: #aaa;
+  margin-top: -10px;
+  margin-bottom: 15px;
+
+}
+
+.sidebar .categories {
+	margin-bottom: 15px;
+}
+
+.sidebar .categories a {
+  display: inline-block;
+	font-size: 15px;
+	font-weight: 700;
+	color: #20232e;
+	transition: all .3s;
+}
+
+.sidebar .categories a:hover {
+	color: #1F51FF;
+}
+
+.sidebar .cats  span{
+	margin-right: 6px;
+  display: inline-block;
+	
+}
+
+.sidebar .cats span{
+	margin-bottom: 10px;
+  display: inline-block;
+}
+
+.sidebar .cats span a {
+	font-size: 15px;
+	font-weight: 500;
+	color: #aaa;
+  display: inline-block;
+	border: 1px solid #eee;
+	padding: 10px 18px;
+	transition: all .3s;
+}
+
+.sidebar .cats span a:hover {
+  display: inline-block;
+	background-color: #1F51FF;
+	border-color: #1F51FF;
+	color: #fff;
+}
+
+.sidebar .tags  span{
+	margin-right: 6px;
+  display: inline-block;
+	
+}
+
+.sidebar .tags span{
+	margin-bottom: 10px;
+  display: inline-block;
+}
+
+.sidebar .tags span a {
+	font-size: 15px;
+	font-weight: 500;
+	color: #aaa;
+  display: inline-block;
+	border: 1px solid #eee;
+	padding: 10px 18px;
+	transition: all .3s;
+}
+
+.sidebar .tags span a:hover {
+  display: inline-block;
+	background-color: #00A36C;
+	border-color: #00A36C;
+	color: #fff;
+}
+
+</style>

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    
+    <meta charset="utf-8">
+    <title>Blog Website </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+  <!-- Font -->  
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+ 
+  <!-- CSS  <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+
+  <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    
+    {% if title %}
+    <title>Blog - {{ title }}</title>
+    {% else %}
+    <title>Blog</title>
+    {% endif %}
+        
+    </head>
+
+<body>
+    {% include 'header.html' %}
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% include 'footer.html' %}
+
+    
+    <!-- JavaScript files-->
+    <script src="{% static '/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static '/vendor/popper.js/umd/popper.min.js' %}"> </script>
+    <script src="{% static '/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Additional Scripts -->
+    <script src="{% static '/js/front.js' %}"></script>
+</body>
+
+</html>

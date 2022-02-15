@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="blog-posts">
+  <div class="container">
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-lg-4">
+              <div class="blog-post">
+                <div class="blog-thumb">
+                  <img src="{{ post.thumbnail.url }}" alt="">
+                </div>
+                <div class="down-content">
+                  {% for cat in post.categories.all %}
+                  <span>{{ cat }}</span>
+                  {% endfor %}
+                  <a href="{{ post.get_absolute_url }}"><h4>{{ post.title }}</h4></a>
+                  <div class="post-info">
+                    <a href="#">{{ post.author }}</a>
+                    <a href="#">{{ post.timestamp }}</a>
+                  </div>
+                  <p>{{ post.content|truncatechars:300 }}</p>
+                  <div class="post-options">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="post-tags">
+                          {% for tag in post.tags.all %}
+                          <a href="#">{{ tag }}</a></li>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="post-share">
+                          <i class="fa fa-share-alt"></i>
+                          <a href="#">Facebook</a>,
+                          <a href="#"> Twitter</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            {% endfor %}
+          </div>
+        </div>
+  </section>
+
+
+<style>
+
+/* Blog Posts */
+*{
+  font-family: 'Roboto', sans-serif;
+}
+
+.blog-posts {
+	margin-top: 20px;
+}
+
+.blog-posts .blog-thumb img {
+	width: 100%;
+	overflow: hidden;
+}
+
+.blog-posts .down-content {
+	padding: 10px;
+	border-right: 1px solid #eee;
+	border-left: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+
+.blog-posts .down-content span {
+	font-size: 18px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-weight: 900;
+	color: #1F51FF;
+  
+}
+
+.blog-posts .down-content h4 {
+	font-size: 24px;
+  text-decoration: none;
+	text-transform: capitalize;
+	letter-spacing: 0.5px;
+	font-weight: 900;
+	color: var(--text-color);
+	margin: 10px 0px 10px 0px;
+}
+
+
+.blog-posts .down-content .post-info :after {
+	content: '|';
+	color: #aaa;
+	margin-left: 5px;
+}
+
+.blog-posts .down-content h4 {
+	font-size: 22px;
+	letter-spacing: 0.25px;
+}
+
+.grid-system .down-content .post-info {
+	margin-right: 5px;
+}
+
+.grid-system .down-content .post-info :after {
+	margin-left: 5px;
+}
+
+.blog-posts .down-content .post-info :last-child::after {
+	display: none;
+}
+
+.blog-posts .down-content .post-info a {
+	font-size: 15px;
+	color: #aaa;
+	font-weight: 500;
+	transition: all .3s;
+}
+
+
+.blog-posts .down-content p {
+	padding: 25px 0px;
+	margin: 25px 0px;
+  color: var(--text-color);
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+
+.blog-posts .down-content .post-share {
+  text-align: right;	
+}
+
+.blog-posts .down-content .post-tags ,
+.blog-posts .down-content .post-share  {
+	display: inline-block;
+}
+
+.blog-posts .down-content .post-tags :first-child i,
+.blog-posts .down-content .post-share :first-child i {
+	color: #1F51FF;
+	margin-right: 5px;
+}
+
+.blog-posts .down-content .post-tags ,
+.blog-posts .down-content .post-share  {
+	color:#00A36C;
+  padding-bottom: 10px;
+}
+
+.blog-posts .down-content .post-tags  a,
+.blog-posts .down-content .post-share  a {
+	font-size: 15px;
+	color: #00A36C;
+	font-weight: 500;
+	transition: all .3s;
+}
+
+
+</style>   
+
+{% endblock content %}
+
+<!--
+
+<section class="blog-posts">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="all-blog-posts">
+          <div class="row">
+            {% for post in posts %}
+            <div class="col-lg-12">
+              <div class="blog-post">
+                <div class="blog-thumb">
+                  <img src="{{ post.thumbnail.url }}" alt="">
+                </div>
+                <div class="down-content">
+                  {% for cat in post.categories.all %}
+                  <span>{{ cat }}</span>
+                  {% endfor %}
+                  <a href="post.html"><h4>{{ post.title }}</h4></a>
+                  <div class="post-info">
+                    <a href="#">{{ post.author }}</a>
+                    <a href="#">{{ post.timestamp }}</a>
+                    <a href="#">{{ post.comment_count }} comments</a>
+                  </div>
+                  <p>{{ post.content|truncatechars:300 }}</p>
+                  <div class="post-options">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="post-tags">
+                          {% for tag in post.tags.all %}
+                          <a href="#">{{ tag }}</a></li>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="post-share">
+                          <i class="fa fa-share-alt"></i>
+                          <a href="#">Facebook</a>,
+                          <a href="#"> Twitter</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% include 'sidebar.html' with most_recent=most_recent category_count=category_count tag_count=tag_count %}
+    </div>
+  </div>
+</section>
+
+<section class="blog-posts grid-system">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+            {% for obj in object_list %}
+              <div class="blog-post">
+                <div class="blog-thumb"><a href="{{ obj.get_absolute_url }}"><img src="{{ obj.thumbnail.url }}" alt="..." class="img-fluid"></a></div>
+                <div class="down-content">
+                  {% for cat in obj.categories.all %}
+                    <span><a href="#">{{ cat }}</a></span>
+                    {% endfor %}
+                  <div><a href="{{ obj.get_absolute_url }}">
+                    <h4>{{ obj.title }}</h4></a></div>
+                  <div class="post-info">
+                      <a href="#">{{ obj.timestamp }}</a>
+                  </div>
+                  <p>{{ obj.content }}</p>
+                  <div class="post-options">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="post-tags">
+                          {% for tag in obj.tags.all %}
+                          <a href="#">{{ tag }}</a>
+                          {% endfor %}
+						</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+				{% endfor %}
+	  </div>
+
+		  <nav aria-label="Page navigation example">
+			<ul class="pagination pagination-template d-flex justify-content-center">
+			  {% if page_obj.has_previous %}
+			  <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link"> <i
+					class="fa fa-angle-left"></i></a></li>
+			  {% endif %}
+			  <li class="page-item"><a href="?page={{ page_obj.number }}"
+				  class="page-link active">{{ page_obj.number }}</a>
+			  </li>
+			  {% if page_obj.has_next %}
+			  <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link"> <i
+					class="fa fa-angle-right"></i></a></li>
+			  {% endif %}
+			</ul>
+		  </nav>
+            </div>
+		  {% include 'sidebar.html' with most_recent=most_recent category_count=category_count %}   
+          </div>
+		  
+        </div>
+      
+</section>
+
+
+
+-->

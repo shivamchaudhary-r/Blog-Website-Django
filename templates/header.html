@@ -1,0 +1,216 @@
+
+<header class="header">	  
+	   <!-- Main Navbar-->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <!-- Navbar Brand -->
+
+      <a class="navbar-brand navbar-header d-flex" href="/"><h2>Blogger<em>.</em></h2></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+              aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar Menu -->
+      <div id="navbarcollapse navbarResponsive" class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+		  <li class="nav-item"><a href="/blog/" class="nav-link ">Home</a></li>
+		  <li class="nav-item"><a href="/" class="nav-link ">Blog</a></li>
+          <li class="nav-item"><a href="/post/1/" class="nav-link ">Post</a></li>
+		  {% if user.is_authenticated %}
+		  	<li class="nav-item"><a href="{% url 'post-create' %}" class="nav-link ">New Post</a></li>
+        	<li class="nav-item"><a href="{% url 'accounts_update' %}" class="nav-link ">Profile</a></li>
+        	{% else %}
+            <li class="nav-item"><a href="{% url 'accounts_register' %}" class="nav-link ">SignUp</a></li>
+			<li class="nav-item"><a href="{% url 'admin:index' %}" class="nav-link ">Login</a></li>
+        	{% endif %}
+			<div class="darkLight-searchBox">
+				<li class="dark-light">
+					<i class='bx bx-moon moon'></i>
+					<i class='bx bx-sun sun'></i>
+				</li>
+			</div>
+			</ul>
+      </div>
+    </div>
+  </nav>
+
+
+</header>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.4s ease;;
+}
+
+:root{
+    --body-color: #ffffff;
+    --nav-color: #ffffff;
+	--text-color:#202020;
+}
+
+body{
+    height: 100vh;
+    background-color: var(--body-color);
+}
+
+body.dark{
+    --body-color: #202020;
+    --nav-color: #202020;
+	--text-color:#afafaf;
+}
+
+
+.nav-bar .darkLight-searchBox{
+    display: flex;
+    align-items: center;
+}
+
+.darkLight-searchBox .dark-light{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+}
+
+.dark-light i {
+    position: absolute;
+    color: var(--text-color);
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dark-light i.sun{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dark-light.active i.sun{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dark-light.active i.moon{
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Header Style */
+
+.header {
+  font-family: 'Roboto', sans-serif;
+	width: 100%;
+	height: 100px;
+	-webkit-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+ 
+.background-header {
+	top: 0;
+	height: 25px;
+	position: fixed;
+	box-shadow: 0px 1px 10px rgba(0,0,0,0.1);
+}
+
+.background-header .navbar-nav .nav-link:hover,
+.background-header .navbar-nav .active>.nav-link,
+.background-header .navbar-nav .nav-link.active,
+.background-header .navbar-nav .nav-link.show,
+.background-header .navbar-nav .show>.nav-link {
+	color: #1F51FF!important;
+}
+.navbar{
+	border-bottom: 1px solid #eee;
+ }
+ 
+.navbar .navbar-brand {
+	float: 	left;
+	outline: none;
+}
+.navbar .navbar-brand h2 {
+	color:#1F51FF ;
+	text-transform: uppercase;
+	font-size: 24px;
+	font-weight: 900;
+	-webkit-transition: all .3s ease 0s;
+    -moz-transition: all .3s ease 0s;
+    -o-transition: all .3s ease 0s;
+    transition: all .3s ease 0s;
+}
+
+.navbar .navbar-brand h2 em {
+	font-size: 44px;
+	font-style: normal;
+	color:#00A36C;
+}
+
+#navbarResponsive {
+	z-index: 999;
+}
+.navbar-collapse {
+	text-align: center;
+}
+.navbar .navbar-nav .nav-item {
+	margin: 0px 15px;
+}
+.navbar .navbar-nav a.nav-link {
+	text-transform: capitalize;
+	font-size: 15px;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: var(--text-color);
+	letter-spacing: 0.5px;
+	transition: all 0.3s;
+}
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .active>.nav-link,
+.navbar .navbar-nav .nav-link.active,
+.navbar .navbar-nav .nav-link.show,
+.navbar .navbar-nav .show>.nav-link {
+	color: #1F51FF;
+}
+
+
+
+</style>
+
+<script>
+  
+	const body = document.querySelector("body"),
+		  nav = document.querySelector("nav"),
+		  modeToggle = document.querySelector(".dark-light"),
+		  searchToggle = document.querySelector(".searchToggle"),
+		  sidebarOpen = document.querySelector(".sidebarOpen"),
+		  siderbarClose = document.querySelector(".siderbarClose");
+	
+		  let getMode = localStorage.getItem("mode");
+			  if(getMode && getMode === "dark-mode"){
+				body.classList.add("dark");
+			  }
+	
+	// js code to toggle dark and light mode
+		  modeToggle.addEventListener("click" , () =>{
+			modeToggle.classList.toggle("active");
+			body.classList.toggle("dark");
+	
+			// js code to keep user selected mode even page refresh or file reopen
+			if(!body.classList.contains("dark")){
+				localStorage.setItem("mode" , "light-mode");
+			}else{
+				localStorage.setItem("mode" , "dark-mode");
+			}
+		  });
+	
+		</script>
+  
